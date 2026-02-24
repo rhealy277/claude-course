@@ -24,12 +24,12 @@ fi
 
 # Build the cron command
 # 9 AM ET = cron handles via TZ variable
-CRON_CMD="0 9 * * 1-5 cd $SCRIPT_DIR && TZ=America/New_York $PYTHON_BIN main.py >> $LOG_FILE 2>&1"
+CRON_CMD="0 9 * * 1-5 cd $SCRIPT_DIR && TZ=America/New_York $PYTHON_BIN agent.py >> $LOG_FILE 2>&1"
 
 # Check if cron job already exists
-if crontab -l 2>/dev/null | grep -q "prospect-tracker\|main.py.*prospect"; then
+if crontab -l 2>/dev/null | grep -q "prospect-tracker\|agent.py.*prospect"; then
     echo "A prospect tracker cron job already exists:"
-    crontab -l | grep "prospect-tracker\|main.py"
+    crontab -l | grep "prospect-tracker\|agent.py"
     echo ""
     read -p "Replace it? (y/N): " response
     if [[ "$response" != "y" && "$response" != "Y" ]]; then
@@ -37,7 +37,7 @@ if crontab -l 2>/dev/null | grep -q "prospect-tracker\|main.py.*prospect"; then
         exit 0
     fi
     # Remove existing entry
-    crontab -l 2>/dev/null | grep -v "prospect-tracker\|main.py" | crontab -
+    crontab -l 2>/dev/null | grep -v "prospect-tracker\|agent.py" | crontab -
 fi
 
 # Install the cron job
@@ -46,7 +46,7 @@ fi
 echo "Cron job installed successfully!"
 echo ""
 echo "Schedule: Monday-Friday at 9:00 AM Eastern"
-echo "Command:  $PYTHON_BIN main.py"
+echo "Command:  $PYTHON_BIN agent.py"
 echo "Log file: $LOG_FILE"
 echo ""
 echo "Verify with: crontab -l"
